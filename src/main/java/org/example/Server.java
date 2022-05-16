@@ -109,7 +109,7 @@ public class Server {
         double price=products.get(0).getPrice();
         int index=0;
         for(int i=0;i<products.size();i++) {
-            if (price<products.get(i).getPrice())
+            if (products.get(i).getPrice()<price)
             {
                 price=products.get(i).getPrice();
                 index=i;
