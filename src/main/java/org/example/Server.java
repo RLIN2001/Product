@@ -6,13 +6,18 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Server {
     static int portNumber = 1234;
     static PrintWriter out;
+    static ArrayList<Product> products = new ArrayList<>();
+
     public static void main(String[] args) {
 
         System.out.println("Start Server");
+
+
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(portNumber);
@@ -27,6 +32,7 @@ public class Server {
             System.out.println("Accept failed");
             e.printStackTrace();
         }
+        buildProductList();
 
 
         System.out.println("Accettato");
@@ -53,7 +59,9 @@ public class Server {
         String s="";
         try {
             while ((s = in.readLine()) != null) {
+
                 System.out.println(s);
+
                 //out.println(s.toUpperCase());
             }
         }
@@ -61,5 +69,11 @@ public class Server {
             e.printStackTrace();
         }
 
+    }
+
+    private static void buildProductList() {
+        products.add(new Product(36213,"Huawei Honor 8 BLACK",25.94, 6));
+        products.add(new Product(36214,"Huawei Honor 8 RED",26.94, 1));
+        products.add(new Product(36215,"Apple IPhone 13 RED",1226.94, 10));
     }
 }
