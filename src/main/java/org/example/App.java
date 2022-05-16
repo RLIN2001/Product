@@ -36,12 +36,6 @@ public class App
             {
                 if((userInput = stdIn.readLine())!=null) {
 
-                    while(!userInput.equals("cheaper") || !userInput.equals("all") || !userInput.equals("all_sorted"))
-                    {
-
-                        System.out.println("no ex");
-                        userInput=stdIn.readLine();
-                    }
                     out.println(userInput);
                 }
 

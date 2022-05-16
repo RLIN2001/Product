@@ -1,5 +1,7 @@
 package org.example;
 
+import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,10 +9,14 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Server {
     static int portNumber = 1234;
     static PrintWriter out;
+    static Gson gson = new Gson();
+    static String json;
+
     static ArrayList<Product> products = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -60,7 +66,8 @@ public class Server {
         try {
             while ((s = in.readLine()) != null) {
 
-                System.out.println(s);
+
+                ControlMessage(s);
 
                 //out.println(s.toUpperCase());
             }
@@ -70,6 +77,59 @@ public class Server {
         }
 
     }
+
+    private static void ControlMessage(String s) {
+        switch (s) {
+            case "cheaper":
+                int index =checkCheaperProduct();
+
+                System.out.println("cheaper");
+                json = gson.toJson(products.get(index));
+                System.out.println(json);
+
+
+                break;
+            case "all":
+                System.out.println("all");
+                json = gson.toJson(products);
+                System.out.println(json);
+                break;
+
+            case "all_sorted":
+                System.out.println("all_sorted");
+                orderList();
+
+                break;
+            default:
+                System.out.println("Invalid option!!!");
+        }
+    }
+
+    private static int checkCheaperProduct() {
+        double price=products.get(0).getPrice();
+        int index=0;
+        for(int i=0;i<products.size();i++) {
+            if (price<products.get(i).getPrice())
+            {
+                price=products.get(i).getPrice();
+                index=i;
+            }
+        }
+        return index;
+    }
+
+    private static void orderList() {
+        ArrayList<Product> orderList=new ArrayList<>();
+        for(Product o:products)
+            orderList.add(o);
+
+        Collections.sort(orderList);
+        json = gson.toJson(orderList);
+        System.out.println(json);
+
+    }
+
+
 
     private static void buildProductList() {
         products.add(new Product(36213,"Huawei Honor 8 BLACK",25.94, 6));
