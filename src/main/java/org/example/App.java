@@ -6,25 +6,52 @@ import java.util.ArrayList;
  * Hello world!
  *
  */
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 public class App 
 {
-    static ArrayList<Product> products = new ArrayList<>();
+    public static void main(String[] args) {
+        String hostname="127.0.0.1";
+        int portNumber=1234;
 
-    public static void main( String[] args )
-    {
-        buildProductList();
-        System.out.println( "Hello World!" );
-    }
+        try{
+            Socket socket=new Socket(hostname,portNumber);
+            PrintWriter out =
+                    new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(socket.getInputStream()));
+
+            BufferedReader stdIn = new BufferedReader(
+                    new InputStreamReader(System.in));
+
+            String userInput;
+
+            while(true)
+            {
+                if((userInput = stdIn.readLine())!=null)
+                    out.println(userInput);
 
 
+                System.out.println("echo: "+in.readLine());
+            }
 
 
+        }
+        catch (UnknownHostException e)
+        {
+            System.err.println("don't know about host "+hostname);
+            System.exit(1);
+        }
+        catch (IOException e)
+        {
+            System.err.println("Couldn't get I/O for the connection to "+hostname);
+            System.exit(1);
+        }
 
-
-    private static void buildProductList() {
-        products.add(new Product(36213,"Huawei Honor 8 BLACK",25.94, 6));
-        products.add(new Product(36214,"Huawei Honor 8 RED",26.94, 1));
-        products.add(new Product(36215,"Apple IPhone 13 RED",1226.94, 10));
-        System.out.println(products);
     }
 }
